@@ -24,7 +24,7 @@ const CreateProductForm = () => {
 
     try {
       // Enviar el producto al servidor
-      const response = await axios.post("/api/products", newProduct);
+      const response = await axios.post("/http://localhost:5000/add", newProduct);
       console.log(response.data); // Hacer algo con la respuesta del servidor
     } catch (error) {
       console.error(error);
@@ -59,21 +59,21 @@ const CreateProductForm = () => {
             value={price}
             onChange={(e) => setPrice(parseFloat(e.target.value))}
             className="w-full border rounded py-2 px-3"
-            required
+            
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="image" className="block font-medium">
+          <label htmlFor="file" className="block font-medium">
             URL de la imagen
           </label>
           <input
-            type="text"
-            id="image"
+            type="file"
+            id="file"
             value={image}
             onChange={(e) => setImage(e.target.value)}
             className="w-full border rounded py-2 px-3"
-            required
+            
           />
         </div>
 

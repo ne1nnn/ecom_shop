@@ -9,7 +9,7 @@ export default function ProductList() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:4000/all')
+      .get('http://localhost:5000/all')
       .then((response) => {
         setProducts(response.data);
       })
@@ -24,7 +24,7 @@ export default function ProductList() {
         {products.map((product) => (
           <div key={product._id} className="bg-white rounded-lg shadow-md p-4">
             <img
-              src={`http://localhost:4000/images/${product.image}`}
+              src={`http://localhost:5000/images/${product.image}`}
               alt={product.title}
               className="w-full h-40 object-cover mb-4"
             />
