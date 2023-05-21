@@ -29,10 +29,10 @@ async function createProduct(req, res) {
     const product = new Product({
       title: req.body.title,
       price: req.body.price,
-      image: req.file.filename, // Nombre de la imagen guardada en el servidor
+      image: req.file.filename,
       description: req.body.description,
       quantity: req.body.quantity,
-      category: req.body.category
+      category: req.body.category,
     });
     await product.save();
     console.log(product);

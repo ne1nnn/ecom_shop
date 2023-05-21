@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const productController = require("../controllers/controller.product");
+const productController = require("../controllers/controller.product.js");
 const upload = require("../helpers/updateFile");
 
 router.get("/all", productController.getAllProducts);
