@@ -4,7 +4,7 @@ import axios from "axios";
 const CreateProductForm = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(0);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [category, setCategory] = useState("");
@@ -12,19 +12,26 @@ const CreateProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Crear el objeto del producto
-    const newProduct = {
-      title,
-      price,
-      image,
-      description,
-      quantity,
-      category,
-    };
+    // Crear el objeto FormData
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("price", price);
+    formData.append("image", image);
+    formData.append("description", description);
+    formData.append("quantity", quantity);
+    formData.append("category", category);
 
     try {
       // Enviar el producto al servidor
-      const response = await axios.post("/http://localhost:5000/add", newProduct);
+      const response = await axios.post(
+        "http://localhost:5010/products/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Establecer el encabezado correcto para el envío de archivos
+          },
+        }
+      );
       console.log(response.data); // Hacer algo con la respuesta del servidor
     } catch (error) {
       console.error(error);
@@ -32,97 +39,91 @@ const CreateProductForm = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
-      <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="form bg-white p-8 rounded-lg shadow-md w-1/2 mx-auto"
+      encType="multipart/form-data"
+    >
+      <div className="mb-4">
+        <label htmlFor="name" className="font-bold mb-2">
+          Nombre:
+        </label>
+        <input
+          id="name"
+          type="text"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          className="border rounded-md border-black p-2 w-full"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="price" className="font-bold mb-2">
+          Precio:
+        </label>
+        <input
+          id="price"
+          type="number"
+          value={price}
+          onChange={(event) => setPrice(event.target.value)}
+          className="border rounded-md border-black p-2 w-full"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="quantity" className="font-bold mb-2">
+          Cantidad:
+        </label>
+        <input
+          id="quantity"
+          type="number"
+          value={quantity}
+          onChange={(event) => setQuantity(event.target.value)}
+          className="border rounded-md border-black p-2 w-full"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="description" className="font-bold mb-2">
+          Descripción:
+        </label>
+        <textarea
+          id="description"
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+          className="border rounded-md border-black p-2 w-full"
+        />
         <div className="mb-4">
-          <label htmlFor="title" className="block font-medium">
-            Título del producto
+          <label htmlFor="category" className="font-bold mb-2">
+            Categoría:
           </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded py-2 px-3"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="price" className="block font-medium">
-            Precio
-          </label>
-          <input
-            type="number"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
-            className="w-full border rounded py-2 px-3"
-            
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="file" className="block font-medium">
-            URL de la imagen
-          </label>
-          <input
-            type="file"
-            id="file"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full border rounded py-2 px-3"
-            
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="description" className="block font-medium">
-            Descripción
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full border rounded py-2 px-3"
-          ></textarea>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="quantity" className="block font-medium">
-            Cantidad
-          </label>
-          <input
-            type="number"
-            id="quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value))}
-            className="w-full border rounded py-2 px-3"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="category" className="block font-medium">
-            Categoría
-          </label>
-          <input
-            type="text"
+          <select
             id="category"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full border rounded py-2 px-3"
-          />
+            onChange={(event) => setCategory(event.target.value)}
+            className="border rounded-md border-black p-2 w-full"
+          >
+            <option value="">Seleccione una categoría</option>
+            {/* Agrega más opciones de categorías aquí */}
+          </select>
         </div>
-
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        >
-          Crear Producto
-        </button>
-      </form>
-    </div>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="image" className="font-bold mb-2">
+          Imagen:
+        </label>
+        <input
+          id="image"
+          type="file"
+          multiple
+          onChange={(event) => setImage(event.target.files[0])}
+          className="border rounded-md border-black p-2 w-full"
+        />
+      </div>
+      <button
+        type="submit"
+        className="bg-black text-white p-2 px-4 rounded-md cursor-pointer mt-4 hover:bg-gray-700"
+      >
+        Cargar producto
+      </button>
+    </form>
   );
 };
 

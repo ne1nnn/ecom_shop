@@ -1,18 +1,49 @@
-import React from 'react';
-import { FaHome, FaUser, FaShoppingCart } from 'react-icons/fa';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ onUserIconClick }) => { // Recibe la función onUserIconClick como prop
+import { RiHome2Line, RiUserLine, RiShoppingCartLine } from "react-icons/ri";
+
+const Navbar = ({ toggleCart }) => {
+  const navigate = useNavigate();
+  const goUserPanel = () => {
+    navigate("/login");
+  };
+  const goHome = () => {
+    navigate("/home");
+  };
+  const cartProducts = () => {
+    toggleCart();
+  };
+
   return (
-    <nav className="bg-gray-800 py-4">
-      <ul className="flex items-center justify-between p-4">
+    <nav className="bg-gray-800 py-6 px-4 rounded-lg mb-8">
+      <ul className="flex items-center justify-between">
         <li>
-          <FaHome className="text-white" />
+          <button
+            className="flex items-center text-white focus:outline-none hover:bg-gray-700 rounded-lg p-2"
+            onClick={goHome}
+          >
+            <RiHome2Line className="h-8 w-8 mr-2" />
+            <span>Home</span>
+          </button>
         </li>
         <li>
-          <FaUser className="text-white" onClick={onUserIconClick} /> {/* Agrega el evento onClick */}
+          <button
+            className="flex items-center text-white focus:outline-none hover:bg-gray-700 rounded-lg p-2"
+            onClick={cartProducts}
+          >
+            <RiShoppingCartLine className="h-8 w-8 mr-2" />
+            <span>Cart</span>
+          </button>
         </li>
         <li>
-          <FaShoppingCart className="text-white" />
+          <button
+            className="flex items-center text-white focus:outline-none hover:bg-gray-700 rounded-lg p-2"
+            onClick={goUserPanel}
+          >
+            <RiUserLine className="h-8 w-8 mr-2" />
+            <span>Panel de Control</span>
+          </button>
         </li>
       </ul>
     </nav>
